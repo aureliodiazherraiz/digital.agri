@@ -26,7 +26,10 @@ library(tidymodels)#infierno de paquete, reiniciar sesion de r y correrlo de pri
 library(ranger)
 library(doParallel)
 
-
+path2csv <- "C:/Users/Diego/OneDrive/Digital_agri/digital.agri/CSV/"
+path2grafic <- "C:/Users/Diego/OneDrive/Digital_agri/digital.agri/Graficos/"
+getwd()
+setwd("C:/Users/Diego/OneDrive/Digital_agri/digital.agri")
 
 
 #### ILEX ####
@@ -203,7 +206,7 @@ ilex3.map.biom <- tm_shape(anda_shp) + tm_fill() + tm_borders() + tm_shape(ilex3
         tm_dots(col = "AB3_Mgha_", size = 0.25, n = 5, palette ="RdYlGn") + 
         tm_layout(title = "Q. ilex real biomass", 
                   legend.position = c(0.05,0.003), scale = 1, legend.frame = F)
-tmap_save(ilex3.map.biom.predict, paste(path2grafic, filename = "ilex3.map.biom.png"))
+tmap_save(ilex3.map.biom, paste(path2grafic, filename = "ilex3.map.biom.png"))
 
 
 tmap_mode("plot")
