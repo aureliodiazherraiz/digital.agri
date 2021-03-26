@@ -1,0 +1,18 @@
+skim. En el segundo sript de digital agri (linea 7) aparece esta libreria que de una forma ágil devuelve un analisis del dataframe básico
+
+ggpubr. ggline. En el segundo script de digital agri, sirve para hacer un gráfico que muestra la distribucion por puntos de diferentes grupos
+
+tydr. pivot_wider. Sirve para desmembrar una columna factorizada entre los diferentes valores que tiene con otras variables
+
+stargazer. Sirve para escribir en forma de tablas los resultados de análisis estadísticos
+
+ggplot. facet_wrap(vars(class)). Ayuda a ver de una sola vez vários gráficos separados por categorias (de una misma variable), puedes compararlas rápidamente
+
+texreg::htmlreg(list(fit1,fit2,fit3),file='models.doc' sirve para exportar los diferentes resultados de los modelos en forma de doc
+
+capture.output(summary(anova_spx_NDVI3),file="Anova_NDVI_Especies.doc")
+capture.output(Tukey,file="Tukey_sp_NDVI3.doc") ambas sirven para exportar resultados de analisis estadisticos
+
+plot3d(dt_sp$AB3_Mgha, dt_sp$NDVI_IFN3, 
+       dt_sp$Arid_Dm, col = dt_sp$Sp.x, 
+       type = "s", radius = 1,5). Sirve para graficar en 3D los puntos incluso colocarndo las catergorias de alguna variable factor como la especie
