@@ -11,6 +11,7 @@ library(zoo)#para realizar interpolaciones
 
 
 library(corrplot)#correlaciones
+library(scales)#escala, normaliza las variables
 library(agricolae)#ANOVA
 library(nortest)#para los test de normalidad
 library(car)#los test para la homocedasticidad

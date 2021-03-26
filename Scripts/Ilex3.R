@@ -2,7 +2,7 @@ library(tidyverse)
 library(ggpubr)
 library(corrplot)#correlaciones
 
-library(scales)#escala, normaliza las variables
+
 library(mgcv)
 library(glmulti)
 library(rsq) 
@@ -26,10 +26,10 @@ library(tidymodels)#infierno de paquete, reiniciar sesion de r y correrlo de pri
 library(ranger)
 library(doParallel)
 
-path2csv <- "C:/Users/Diego/OneDrive/Digital_agri/digital.agri/CSV/"
-path2grafic <- "C:/Users/Diego/OneDrive/Digital_agri/digital.agri/Graficos/"
+path2csv <- "C:/Users/Diego/Documents/digital.agri/CSV/"
+path2grafic <- "C:/Users/Diego/Documents/digital.agri/Graficos/"
 getwd()
-setwd("C:/Users/Diego/OneDrive/Digital_agri/digital.agri")
+setwd("C:/Users/Diego/Documents/digital.agri")
 
 
 #### ILEX ####
