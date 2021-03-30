@@ -23,16 +23,22 @@ names(re1)
 
 
 ###aplicamos el modelo ###
+
 ilex3_clim<-as.formula(AB3_Mgha ~ aet_stdv + pet_max + pet_min + soil_min + srad_max)
 
+ilex3_clim<-as.formula(paste("AB3_Mgha ~", paste(colnames(re1), collapse = " + ")))
+
 multmodel_ilex_clim <- glmulti(ilex3_clim, data=ilex3.nor, fitfunction=glm, level=1, confsetsize=100, method="h", crit="aicc")
-plot(multmodel_ilex_clim, type="s") ## para visualizar el peso de las variables
 
-multmodel_ilex_clim@formulas[1]
-
-weightable(multmodel_ilex_clim)
+best <- c(multmodel_ilex_clim@formulas[[1]][[3]] ,multmodel_ilex_clim@objects[[1]]$aic)
 
 #Best model: AB3_Mgha~1+aet_stdv+pet_max+pet_min+soil_min
 #Crit= 5194.34723529062
 #Mean crit= 5227.68535937383
+
+plot(multmodel_ilex_clim, type="s") ## para visualizar el peso de las variables
+
+weightable(multmodel_ilex_clim)
+
+
       

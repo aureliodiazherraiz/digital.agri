@@ -2,6 +2,13 @@
 #### RECOMENZANDO #### datos 250121 nuevas coordenadas reproyectadas
 library(pls)
 
+getwd()
+setwd("C:/Users/Diego/OneDrive - Universidad de Córdoba/Documentos/digital.agri")
+
+path2csv <- "C:/Users/Diego/Documents/digital.agri/CSV/"
+path2grafic <- "C:/Users/Diego/Documents/digital.agri/Graficos/"
+
+
 topo_250121<-read_csv("IFN/Topo_ifn_250121.csv")
 topo_250121_gee<-read_excel("IFN/srtm_GEE_250121.xlsx")
 
@@ -25,26 +32,24 @@ names(biomas250121)[1]<-"ID"
 
 ifn_cod<-biomas250121[, c(1:3,6,17,18)]
 
-edafo_250121<-read_csv("edafo_anda_250121.csv")
+edafo_250121<-read_csv("CSV/edafo_anda_250121.csv")
 names(edafo_250121)
-edafo_250121<-edafo_250121[,-c(18:22,25)]
+edafo_250121<-edafo_250121[,-c(1,18:22,25)]
 
-cor_edafo<-edafo_250121[, -c(1:2)]
-cor_edafo<-round(cor(cor_edafo, use="complete.obs"),2)
-corrplot(cor_edafo, method = "shade", shade.col = NA, tl.col = "black",
+cor_edafo<-round(cor(edafo_250121[, -c(1)], use="complete.obs"),2) %>% 
+  corrplot( method = "shade", shade.col = NA, tl.col = "black",
          tl.srt = 55, tl.cex = 0.5, number.cex = 0.55, 
          addCoef.col = "black", type = "lower", diag = F, 
-         addshade = "all", order = "AOE")#no existen correlaciones entre variables apenas entre mo y mo_sup y entre textura y are
+         addshade = "all", order = "FPC")#no existen correlaciones entre variables apenas entre mo y mo_sup y entre textura y are
 
 edtobi<-merge(topo_250121_gee,biomas250121, by = "ID")
 
 edtobi_dt<-merge(edtobi, edafo_250121, by = "ID")#unimos los tres dataframes con datos edaficos, topograficos e biologicos
 names(edtobi_dt)
 
-edtobi_dt<-edtobi_dt[, -c(23:26,42:43)]
+edtobi_dt<-edtobi_dt[, -c(23:25,41:42)]
 
-write.csv(edtobi_dt, file = "edtobi_250121.csv")
-
+write.csv(edtobi_dt, paste(path2csv, file = "edtobi_250121_2.csv"))
 
 
 
@@ -92,27 +97,35 @@ cor_spect<-round(cor(evi_ndvi[, -c(1,12:15)], use="complete.obs"),2) %>%
 
 TERCLIM_Z06 <- read_excel("IFN/TERRACLIMATE_Z06.xlsx")
 TERCLIM_Z07 <- read_excel("IFN/TERRACLIMATE_Z07.xlsx")
+TERCLIM_Z08 <- read_excel("IFN/TERRACLIMATE_Z08.xlsx")
 
 names(TERCLIM_Z07)[1]<-"ID"
 TERCLIM_Z07$ID<-1:7297
 names(TERCLIM_Z06)[1]<-"ID"
 TERCLIM_Z06$ID<-1:7297
+names(TERCLIM_Z08)[1]<-"ID"
+TERCLIM_Z08$ID<-1:7297
 
 TERCLIM_Z07$ifn<-2007
 TERCLIM_Z06$ifn<-2006
+TERCLIM_Z08$ifn<-2008
 
 TERCLIM_Z07<-merge(TERCLIM_Z07, ifn_cod, by = "ID")
 TERCLIM_Z06<-merge(TERCLIM_Z06, ifn_cod, by = "ID")
+TERCLIM_Z08<-merge(TERCLIM_Z08, ifn_cod, by = "ID")
 
-terclim<-rbind(TERCLIM_Z07, TERCLIM_Z06)
+terclim<-rbind(TERCLIM_Z07, TERCLIM_Z06, TERCLIM_Z08)
 
-terclim[c(terclim$Provincia_3 %in% c("Almeria","Cadiz","Granada","Huelva","Malaga","Sevilla") & terclim$ifn == 2006),] <- NA
+terclim<-terclim %>% filter((ifn == year3))
 
-terclim[c(terclim$Provincia_3 %in% c("Cordoba","Jaen") & terclim$ifn == 2007),] <- NA
+#terclim[c(terclim$Provincia_3 %in% c("Almeria","Cadiz","Granada","Huelva","Malaga","Sevilla") & terclim$ifn == 2006),] <- NA
+
+#terclim[c(terclim$Provincia_3 %in% c("Cordoba","Jaen") & terclim$ifn == 2007),] <- NA
+
 terclim <- na.omit(terclim)
 summary(terclim)
 names(terclim)
-terclim<-terclim[, -c(1:3,20:22)]
+terclim<-terclim[, -c(1:3,20:23)]
 
 cor_terclim<-round(cor(terclim, use="complete.obs"),2)
 corrplot(cor_terclim, method = "shade", shade.col = NA, tl.col = "black",
@@ -122,14 +135,15 @@ corrplot(cor_terclim, method = "shade", shade.col = NA, tl.col = "black",
 
 
 te.cli.spt<-merge(terclim,evi_ndvi, by = c("X","Y"))
-write.csv(te.cli.spt, file = "te_clim_spec_ifn3.csv")
+
+write.csv(te.cli.spt, paste(path2csv,"te_clim_spec_ifn3.csv"))
 
 names(te.cli.spt)
 
 dt.raw<-merge(te.cli.spt[, -c(19:21)], edtobi_dt, by =c("Provincia_3","Estadillo_3"))
 names(dt.raw)
 
-write.csv(dt.raw, file = "datos_brutos_250121.csv")
+write.csv(dt.raw, paste(path2csv, file = "datos_brutos_250121.csv"))
 
 
 #analizamos los datos de cada especie para el IFN3
